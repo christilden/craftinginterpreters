@@ -7,8 +7,11 @@ Building and interpreter and compiler!
 3. python 2.7 (optional)
 
 # Running (manually)
+
 `cd java`
+
 `mvn compile`
+
 `mvn package`
 
 Start a REPL to test the lox language (http://craftinginterpreters.com/the-lox-language.html)
@@ -16,7 +19,9 @@ Start a REPL to test the lox language (http://craftinginterpreters.com/the-lox-l
 `java -jar target/java-interp-1.0-SNAPSHOT.jar'`
 
 # Running (Via Python's Fabric)
+
 `cd java`
+
 One time setup: `pip install -r requirements.txt`
 
 Compile, package, and run the lox REPL
