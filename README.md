@@ -1,5 +1,5 @@
 # craftinginterpreters
-Building and interpreter and compiler!
+Building an interpreter and compiler!
 
 # Dependencies
 1. java 1.7+
