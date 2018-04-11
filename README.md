@@ -25,4 +25,5 @@ Start a REPL to test the lox language (http://craftinginterpreters.com/the-lox-l
 One time setup: `pip install -r requirements.txt`
 
 Compile, package, and run the lox REPL
+
 `fab run`
