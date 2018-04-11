@@ -16,9 +16,9 @@ Building an interpreter and compiler!
 
 Start a REPL to test the lox language (http://craftinginterpreters.com/the-lox-language.html)
 
-`java -jar target/java-interp-1.0-SNAPSHOT.jar'`
+`java -jar target/java-interp-1.0-SNAPSHOT.jar`
 
-# Running (Via Python's Fabric)
+# Running (via Python's Fabric)
 
 `cd java`
 
