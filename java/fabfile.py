@@ -11,6 +11,14 @@ def clean():
     local('mvn clean')
 
 
+def compile():
+    local('mvn compile')
+
+
+def test():
+    local('mvn test')
+
+
 def package():
     local('mvn package')
 
@@ -18,3 +26,8 @@ def package():
 def run():
     package()
     local('java -jar target/java-interp-1.0-SNAPSHOT.jar')
+
+
+def generate_ast():
+    compile()
+    local('cd target/classes && java com/christilden/craftinginterpreters/tool/GenerateAst ../../src/main/java/com/christilden/lox')
