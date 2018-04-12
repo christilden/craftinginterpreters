@@ -25,9 +25,9 @@ public class AstPrinterTest extends TestCase {
     }
 
     /**
-     * Rigourous Test :-)
+     * Tests the AST printer.
      */
-    public void testApp() {
+    public void testAstPrinter() {
         Expr expression = new Expr.Binary(
             new Expr.Unary(
                 new Token(TokenType.MINUS, "-", null, 1),
