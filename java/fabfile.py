@@ -28,6 +28,12 @@ def run():
     local('java -jar target/java-interp-1.0-SNAPSHOT.jar')
 
 
+def run_test_script():
+    package()
+    local('java -jar target/java-interp-1.0-SNAPSHOT.jar test.lox')
+
+
+
 def generate_ast():
     compile()
     local('cd target/classes && java com/christilden/craftinginterpreters/tool/GenerateAst ../../src/main/java/com/christilden/lox')
