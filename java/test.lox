@@ -34,3 +34,10 @@ if (1 == 1 and true) {
     print b;
     print c;
 }
+
+// test while loops
+var i = 0;
+while (i < 5) {
+    print i;
+    i = i + 1;
+}
