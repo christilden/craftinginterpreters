@@ -24,10 +24,6 @@ class Parser {
         return statements;
     }
 
-    private Expr expression() {
-        return equality();
-    }
-
     private Stmt declaration() {
         try {
             if (match(VAR)) return varDeclaration();
@@ -67,6 +63,10 @@ class Parser {
         Expr expr = expression();
         consume(SEMICOLON, "Expect ';' after expression.");
         return new Stmt.Expression(expr);
+    }
+
+    private Expr expression() {
+        return equality();
     }
 
     private Expr equality() {
