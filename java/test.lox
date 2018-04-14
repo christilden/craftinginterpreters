@@ -42,7 +42,14 @@ while (i < 5) {
     i = i + 1;
 }
 
-// for loops!
+// for loops
 for (var i=0; i<5; i=i+1) {
     print i;
 }
+
+// tests function calls!!
+fun sayHi(first, last) {
+    print "Hi, " + first + " " + last + "!";
+}
+
+sayHi("Chris", "Tilden");
