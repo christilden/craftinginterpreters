@@ -66,7 +66,43 @@ class Parser {
     }
 
     private Expr expression() {
-        return equality();
+        return assignment();
+    }
+
+    // Most of the code for parsing an assignment expression looks similar to
+    // the other binary operators like +. We parse the left-hand side, which can
+    //  be any expression of higher precedence. If we find an =, we parse the
+    // right-hand side and then wrap it all up in an assignment expression tree
+    // node.
+    //
+    // One slight difference from binary operators is that we don’t loop to
+    // build up a sequence of the same operator. Since assignment is
+    // right-associative, we instead recursively call assignment() to parse the
+    // right-hand side.
+    //
+    // The trick is that right before we create the assignment expression node,
+    // we look at the left-hand side expression and figure out what kind of
+    // assignment target it is. We convert the r-value expression node into an
+    // l-value representation.
+    //
+    // This trick works because it turns out that every valid assignment target
+    // happens to also be valid syntax as a normal expression.
+    private Expr assignment() {
+        Expr expr = equality();
+
+        if (match(EQUAL)) {
+            Token equals = previous();
+            Expr value = assignment();
+
+            if (expr instanceof Expr.Variable) {
+                Token name = ((Expr.Variable)expr).name;
+                return new Expr.Assign(name, value);
+            }
+
+            error(equals, "Invalid assignment target.");
+        }
+
+        return expr;
     }
 
     private Expr equality() {
