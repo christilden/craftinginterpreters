@@ -11,29 +11,24 @@ def clean():
     local('mvn clean')
 
 
+def generate_ast():
+    compile()
+    local('cd target/classes && java com/christilden/craftinginterpreters/tool/GenerateAst ../../src/main/java/com/christilden/lox')
+
+
 def compile():
     local('mvn compile')
-
-
-def test():
-    local('mvn test')
 
 
 def package():
     local('mvn package')
 
 
-def run():
-    package()
-    local('java -jar target/java-interp-1.0-SNAPSHOT.jar')
-
-
-def run_test_script():
+def test():
     package()
     local('java -jar target/java-interp-1.0-SNAPSHOT.jar test.lox')
 
 
-
-def generate_ast():
-    compile()
-    local('cd target/classes && java com/christilden/craftinginterpreters/tool/GenerateAst ../../src/main/java/com/christilden/lox')
+def run():
+    package()
+    local('java -jar target/java-interp-1.0-SNAPSHOT.jar')
