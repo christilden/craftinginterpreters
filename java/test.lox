@@ -64,3 +64,18 @@ fun fibonacci(n) {
 for (var i = 0; i < 20; i = i + 1) {
     print fibonacci(i);
 }
+
+// tests closures
+fun makePoint(x, y) {
+    fun closure(method) {
+        if (method == "x") return x;
+        if (method == "y") return y;
+        print "unknown method " + method;
+    }
+
+    return closure;
+}
+
+var point = makePoint(2, 3);
+print point("x");
+print point("y");
