@@ -80,6 +80,10 @@ class Parser {
         return expressionStatement();
     }
 
+    // creates a "C style" for loop, which is just syntatic sugar. Parse four
+    // components from the for loop: 1) initializer (e.g. int i=0;), 2) condition
+    // (e.g. i<5;), 3) increment (e.g. i++), and 4) the statement (or block).
+    // These four elements are then transformed into a while loop's syntax.
     private Stmt forStatement() {
         consume(LEFT_PAREN, "Expect '(' after 'for'.");
 
@@ -106,6 +110,7 @@ class Parser {
 
         Stmt body = statement();
 
+        // Transform the for loop elements into a while loop's syntax.
         if (increment != null) {
             body = new Stmt.Block(Arrays.asList(
                 body, new Stmt.Expression(increment)));
