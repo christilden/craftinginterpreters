@@ -79,3 +79,16 @@ fun makePoint(x, y) {
 var point = makePoint(2, 3);
 print point("x");
 print point("y");
+
+// tests to ensure closures are working properly. this should print "global" twice.
+
+var a = "global";
+{
+  fun showA() {
+    print a;
+  }
+
+  showA();
+  var a = "block";
+  showA();
+}
