@@ -104,3 +104,12 @@ print DevonshireCream;
 class Bagel {}
 var bagel = Bagel();
 print bagel;
+
+// tests class definitions, object instances, and method calls
+class Bacon {
+    eat() {
+        print "Crunch crunch crunch!";
+    }
+}
+
+Bacon().eat();
