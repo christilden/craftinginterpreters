@@ -204,7 +204,7 @@ class Parser {
 
     // Most of the code for parsing an assignment expression looks similar to
     // the other binary operators like +. We parse the left-hand side, which can
-    //  be any expression of higher precedence. If we find an =, we parse the
+    // be any expression of higher precedence. If we find an =, we parse the
     // right-hand side and then wrap it all up in an assignment expression tree
     // node.
     //
@@ -230,6 +230,9 @@ class Parser {
             if (expr instanceof Expr.Variable) {
                 Token name = ((Expr.Variable)expr).name;
                 return new Expr.Assign(name, value);
+            } else if (expr instanceof Expr.Get) {
+                Expr.Get get = (Expr.Get)expr;
+                return new Expr.Set(get.object, get.name, value);
             }
 
             error(equals, "Invalid assignment target.");
