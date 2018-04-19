@@ -148,3 +148,19 @@ class Account {
 
 var tildensAccount = Account(1234, "Christopher Tilden", 20180401);
 print tildensAccount.age();
+
+// tests inheritance
+class Doughnut {
+    cook() {
+        print "Fry until golden brown.";
+    }
+}
+
+class BostonCream < Doughnut {
+    cook() {
+        super.cook();
+        print "Pip full of custard and coat with chocolate.";
+    }
+}
+
+BostonCream().cook();
