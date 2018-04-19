@@ -93,6 +93,8 @@ var a = "global";
   showA();
 }
 
+// tests class parsing
+
 class DevonshireCream {
     serveOn() {
         return "Scones";
@@ -125,3 +127,24 @@ class Cake {
 var cake = Cake();
 cake.flavor = "German chocolate";
 cake.taste();
+
+// tests initializers
+
+fun today() {
+    return 20180418;
+}
+
+class Account {
+    init(number, name, dateCreated) {
+        this.number = number;
+        this.name = name;
+        this.dateCreated = dateCreated;
+    }
+
+    age() {
+        return today() - this.dateCreated;
+    }
+}
+
+var tildensAccount = Account(1234, "Christopher Tilden", 20180401);
+print tildensAccount.age();
