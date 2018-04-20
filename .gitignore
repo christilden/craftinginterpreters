@@ -1,4 +1,6 @@
 .*.swp
 *.pyc
+build
+clox
 java/target
 java/venv
