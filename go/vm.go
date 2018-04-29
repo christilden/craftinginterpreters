@@ -92,12 +92,12 @@ func (vm *VM) CodeLength() int {
 	return len(vm.chunk.code)
 }
 
-func readByte(i int) uint8 {
-	return vm.chunk.code[i]
+func readByte(offset int) uint8 {
+	return vm.chunk.code[offset]
 }
 
-func readConstant(i int) float64 {
-	return vm.chunk.constants[readByte(i)]
+func readConstant(offset int) float64 {
+	return vm.chunk.constants[readByte(offset)]
 }
 
 func push(value float64) {
