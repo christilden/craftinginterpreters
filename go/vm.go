@@ -41,6 +41,7 @@ func run() InterpretResult {
 			fmt.Printf("[ %g ]", value)
 		}
 		fmt.Printf("\n")
+		disassembleInstruction(vm.chunk, i)
 		instruction := readByte(i)
 		switch(instruction) {
 			case OP_CONSTANT: {
