@@ -34,13 +34,11 @@ func interpret(chunk *Chunk) InterpretResult {
 }
 
 func run() InterpretResult {
-	l := len(vm.chunk.code)
+	l := vm.CodeLength()
 	for i := 0; i < l; i++ {
 		fmt.Printf("          ")
 		for _, value := range vm.stack {
-			fmt.Printf("[ ")
-			fmt.Printf("%g", value)
-			fmt.Printf(" ]")
+			fmt.Printf("[ %g ]", value)
 		}
 		fmt.Printf("\n")
 		instruction := readByte(i)
@@ -92,6 +90,10 @@ func run() InterpretResult {
 	}
 
 	return INTERPRET_RUNTIME_ERROR
+}
+
+func (vm *VM) CodeLength() int {
+	return len(vm.chunk.code)
 }
 
 func readByte(i int) uint8 {
