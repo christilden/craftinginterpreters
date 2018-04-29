@@ -36,12 +36,7 @@ func interpret(chunk *Chunk) InterpretResult {
 func run() InterpretResult {
 	l := vm.CodeLength()
 	for i := 0; i < l; i++ {
-		fmt.Printf("          ")
-		for _, value := range vm.stack {
-			fmt.Printf("[ %g ]", value)
-		}
-		fmt.Printf("\n")
-		disassembleInstruction(vm.chunk, i)
+		traceExecution(i)
 		instruction := readByte(i)
 		switch(instruction) {
 			case OP_CONSTANT: {
@@ -114,4 +109,13 @@ func pop() float64 {
 	vm.stack[len(vm.stack)-1] = 0 //write zero value to avoid memory leak
 	vm.stack = vm.stack[:len(vm.stack)-1]
 	return value
+}
+
+func traceExecution(offset int) {
+	fmt.Printf("          ")
+	for _, value := range vm.stack {
+		fmt.Printf("[ %g ]", value)
+	}
+	fmt.Printf("\n")
+	disassembleInstruction(vm.chunk, offset)
 }
