@@ -7,10 +7,10 @@ import (
 
 type VM struct {
 	chunk *Chunk
-	stack []float64
+	stack []Value
 }
 
-type InterpretResult float64
+type InterpretResult uint8
 
 const (
 	INTERPRET_OK InterpretResult = iota
@@ -21,7 +21,7 @@ const (
 var vm VM
 
 func resetStack() {
-	vm.stack = make([]float64, 8)
+	vm.stack = make([]Value, 8)
 }
 
 func initVM() {
@@ -96,18 +96,19 @@ func readByte(offset int) uint8 {
 	return vm.chunk.code[offset]
 }
 
-func readConstant(offset int) float64 {
+func readConstant(offset int) Value {
 	return vm.chunk.constants[readByte(offset)]
 }
 
-func push(value float64) {
+func push(value Value) {
 	vm.stack = append(vm.stack, value)
 }
 
-func pop() float64 {
-	value := vm.stack[len(vm.stack)-1]
-	vm.stack[len(vm.stack)-1] = 0 //write zero value to avoid memory leak
-	vm.stack = vm.stack[:len(vm.stack)-1]
+func pop() Value {
+	key := len(vm.stack) - 1
+	value := vm.stack[key]
+	vm.stack[key] = 0 //write zero value to avoid memory leak
+	vm.stack = vm.stack[:key]
 	return value
 }
 

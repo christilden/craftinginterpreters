@@ -13,7 +13,7 @@ const (
 type Chunk struct {
 	code []uint8
 	lines []int
-	constants []float64
+	constants []Value
 }
 
 func initChunk(chunk *Chunk) {
@@ -25,7 +25,7 @@ func writeChunk(chunk *Chunk, byte uint8, line int) {
 	chunk.lines = append(chunk.lines, line)
 }
 
-func addConstant(chunk *Chunk, value float64) uint8 {
+func addConstant(chunk *Chunk, value Value) uint8 {
 	chunk.constants = append(chunk.constants, value)
 	return uint8(len(chunk.constants) - 1)
 }
