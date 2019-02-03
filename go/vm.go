@@ -28,9 +28,9 @@ func initVM() {
 	resetStack()
 }
 
-func interpret(chunk *Chunk) InterpretResult {
-	vm.chunk = chunk
-	return run()
+func interpret(source *string) InterpretResult {
+	compile(source)
+	return INTERPRET_OK
 }
 
 func run() InterpretResult {

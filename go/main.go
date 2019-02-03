@@ -1,28 +1,67 @@
 package main
 
+import (
+	"bufio"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"strings"
+)
+
+
 func main() {
-	var chunk Chunk
-	initChunk(&chunk)
-	constant := addConstant(&chunk, 1.2)
-	writeChunk(&chunk, OP_CONSTANT, 123)
-	writeChunk(&chunk, constant, 123)
+	if (len(os.Args) == 1) {
+		repl()
+	} else if (len(os.Args) == 2) {
+		runFile(os.Args[1]);
+	} else {
+		fmt.Printf("Usage: glox [path]\n")
+		os.Exit(64)
+	}
+}
 
-	constant = addConstant(&chunk, 3.4)
-	writeChunk(&chunk, OP_CONSTANT, 123)
-	writeChunk(&chunk, constant, 123)
+// SimpleReadLine is simple replacement for GNU readline.
+// prompt is the command prompt to print before reading input.
+func SimpleReadLine(prompt string) (string, error) {
+	fmt.Printf(prompt)
 
-	writeChunk(&chunk, OP_ADD, 123)
+	reader := bufio.NewReader(os.Stdin)
+	line, err := reader.ReadString('\n')
 
-	constant = addConstant(&chunk, 5.6)
-	writeChunk(&chunk, OP_CONSTANT, 123)
-	writeChunk(&chunk, constant, 123)
+	if err == nil {
+		line = strings.TrimRight(line, "\r\n")
+	}
+	return line, err
+}
 
-	writeChunk(&chunk, OP_DIVIDE, 123)
-	writeChunk(&chunk, OP_NEGATE, 123)
+func repl() {
+	for {
+		line, err := SimpleReadLine("> ")
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	writeChunk(&chunk, OP_RETURN, 123)
+		interpret(&line)
+	}
+}
 
-	disassembleChunk(&chunk, "test chunk")
+func runFile(path string) {
+	var source string = readFile(path)
+	result := interpret(&source)
 
-	interpret(&chunk)
+	if (result == INTERPRET_COMPILE_ERROR) { os.Exit(65) }
+	if (result == INTERPRET_RUNTIME_ERROR) { os.Exit(70) }
+}
+
+func readFile(path string) string {
+	dat, err := ioutil.ReadFile("/tmp/dat")
+	check(err)
+	return string(dat)
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
