@@ -22,6 +22,12 @@ static void freeObject(Obj* object) {
             FREE(ObjString, object);
             break;
         }
+        case OBJ_ARRAY: {
+            ObjArray* array = (ObjArray*) object;
+            freeValueArray(&array->elements);
+            FREE(ObjArray, object);
+            break;
+        }
     }
 }
 

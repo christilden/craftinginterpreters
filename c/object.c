@@ -46,6 +46,13 @@ static ObjString* allocateString(char* chars, int length, uint32_t hash) {
     return string;
 }
 
+ObjArray* allocateArray() {
+    ObjArray* array = ALLOCATE_OBJ(ObjArray, OBJ_ARRAY);
+    initValueArray(&array->elements);
+
+    return array;
+}
+
 static uint32_t hashString(const char* key, int length) {
     uint32_t hash = 2166136261u;
 
@@ -82,6 +89,14 @@ ObjString* copyString(const char* chars, int length) {
     return allocateString(headChars, length, hash);
 }
 
+ObjArray* writeArray(Value* objArrayValue, int index, Value value) {
+    ObjArray* array = (IS_ARRAY(*objArrayValue))
+            ? AS_ARRAY(*objArrayValue) : allocateArray();
+    writeValueArray(&array->elements, index, value);
+
+    return array;
+}
+
 void printObject(Value value) {
     switch (OBJ_TYPE(value)) {
         case OBJ_FUNCTION:
@@ -96,6 +111,9 @@ void printObject(Value value) {
             break;
         case OBJ_STRING:
             printf("%s", AS_CSTRING(value));
+            break;
+        case OBJ_ARRAY:
+            printf("%d", AS_ARRAY_COUNT(value));
             break;
     }
 }

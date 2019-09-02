@@ -106,6 +106,39 @@ static void concatenate() {
     push(OBJ_VAL(result));
 }
 
+static bool getArray(Value* objArray) {
+    if (!IS_ARRAY(*objArray)) {
+        runtimeError("Operand must be an array.");
+        return false;
+    }
+    ObjArray* array = AS_ARRAY(*objArray);
+
+    if (!IS_NUMBER(peek(0))) {
+        runtimeError("Array index must a number.");
+        return false;
+    }
+    int index = (int) AS_NUMBER(pop());
+
+    if (AS_ARRAY_COUNT(*objArray) < index + 1) {
+        runtimeError("Index exceeds array count.");
+        return false;
+    }
+
+    push(array->elements.values[index]);
+    return true;
+}
+
+static bool setArray(Value* objArray, Value value) {
+    if (!IS_NUMBER(peek(0))) {
+        runtimeError("Array index must a number.");
+        return false;
+    }
+    int index = (int) AS_NUMBER(pop());
+
+    push(OBJ_VAL(writeArray(objArray, index, value)));
+    return true;
+}
+
 static InterpretResult run() {
     CallFrame* frame = &vm.frames[vm.frameCount - 1];
 
@@ -165,6 +198,26 @@ static InterpretResult run() {
                 push(value);
                 break;
             }
+            case OP_GET_ARRAY_LOCAL: {
+                uint8_t slot = READ_BYTE();
+                Value objArray = frame->slots[slot];
+                if (!getArray(&objArray)) {
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+                break;
+            }
+            case OP_GET_ARRAY_GLOBAL: {
+                ObjString* name = READ_STRING();
+                Value objArray;
+                if (!tableGet(&vm.globals, name, &objArray)) {
+                    runtimeError("Undefined variable '%s'.", name->chars);
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+                if (!getArray(&objArray)) {
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+                break;
+            }
             case OP_DEFINE_GLOBAL: {
                 ObjString* name = READ_STRING();
                 tableSet(&vm.globals, name, peek(0));
@@ -178,6 +231,37 @@ static InterpretResult run() {
             }
             case OP_SET_GLOBAL: {
                 ObjString* name = READ_STRING();
+                if (tableSet(&vm.globals, name, peek(0))) {
+                    runtimeError("Undefined variable '%s'.", name->chars);
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+                break;
+            }
+            case OP_SET_ARRAY_LOCAL: {
+                uint8_t slot = READ_BYTE();
+                Value value = pop();
+                Value objArray = frame->slots[slot];
+
+                if (!setArray(&objArray, value)) {
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
+                frame->slots[slot] = peek(0);
+                break;
+            }
+            case OP_SET_ARRAY_GLOBAL: {
+                ObjString* name = READ_STRING();
+                Value value = pop();
+                Value objArray;
+                if (!tableGet(&vm.globals, name, &objArray)) {
+                    runtimeError("Undefined variable '%s'.", name->chars);
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
+                if (!setArray(&objArray, value)) {
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
                 if (tableSet(&vm.globals, name, peek(0))) {
                     runtimeError("Undefined variable '%s'.", name->chars);
                     return INTERPRET_RUNTIME_ERROR;
