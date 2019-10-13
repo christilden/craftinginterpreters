@@ -7,6 +7,7 @@ import (
 
 type VM struct {
 	chunk *Chunk
+	// ip    *uint8
 	stack []Value
 }
 
@@ -29,8 +30,19 @@ func initVM() {
 }
 
 func interpret(source *string) InterpretResult {
-	compile(source)
-	return INTERPRET_OK
+	var chunk Chunk
+	initChunk(&chunk)
+
+	if (!compile(source, &chunk)) {
+		return INTERPRET_COMPILE_ERROR
+	}
+
+	vm.chunk = &chunk
+	// vm.ip = vm.chunk.code
+
+	InterpretResult result = run()
+
+	return result
 }
 
 func run() InterpretResult {
