@@ -641,10 +641,10 @@ static void forStatement() {
 
     consume(TOKEN_LEFT_PAREN, "Expect '(' after 'for'.");
 
-    if (match(TOKEN_VAR)) {
-        varDeclaration();
-    } else if (match(TOKEN_SEMICOLON)) {
+    if (match(TOKEN_SEMICOLON)) {
         // No initializer.
+    } else if (match(TOKEN_VAR)) {
+        varDeclaration();
     } else {
         expressionStatement();
     }
