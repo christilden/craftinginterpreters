@@ -539,7 +539,6 @@ static void parsePrecedence(Precedence precedence) {
     if (canAssign && match(TOKEN_EQUAL)) {
         // TODO
         error("Invalid assignment target.");
-        expression();
     }
 }
 
