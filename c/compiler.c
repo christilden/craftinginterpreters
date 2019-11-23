@@ -804,7 +804,7 @@ static void statement() {
     }
 }
 
-void expression() {
+static void expression() {
     parsePrecedence(PREC_ASSIGNMENT);
 }
 
