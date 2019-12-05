@@ -4,6 +4,7 @@
 
 #include "common.h"
 #include "compiler.h"
+#include "memory.h"
 #include "scanner.h"
 
 #ifdef DEBUG_PRINT_CODE
@@ -826,4 +827,12 @@ ObjFunction* compile(const char* source) {
     // if there was a compile error, the code is not valid, so don't
     // create a function.
     return parser.hadError ? NULL : function;
+}
+
+void markCompilerRoots() {
+    Compiler* compiler = current;
+    while (compiler != NULL) {
+        markObject((Obj*) compiler->function);
+        compiler = compiler->enclosing;
+    }
 }
